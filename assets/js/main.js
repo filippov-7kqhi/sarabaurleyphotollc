@@ -109,7 +109,12 @@
 
   /* Inquiry form — sent to the owner's inbox through Web3Forms (see the access_key field in index.html) */
   const form = $('#inquiry-form');
-  if (form) {
+  if (form && /^YOUR_/.test(form.elements.access_key.value)) {
+    // No Web3Forms key yet: show a notice instead of a form that can't deliver
+    form.hidden = true;
+    const pending = $('#form-pending');
+    if (pending) pending.hidden = false;
+  } else if (form) {
     const status = $('#form-status');
     const done = $('#form-done');
     const button = $('button[type="submit"]', form);
